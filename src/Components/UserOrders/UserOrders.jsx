@@ -4,12 +4,14 @@ import { OrdersContext } from "../../Context/OrdersContext";
 import { InfinitySpin } from "react-loader-spinner";
 import jwtDecode from "jwt-decode";
 import { CartContext } from "../../Context/CartContext";
+import { useNavigate } from "react-router-dom";
 
 export default function UserOrders() {
   let { getCheckoutOrders, lastOrder } = useContext(OrdersContext);
   let { setCartCount } = useContext(CartContext);
   let [isLoading, setLoading] = useState(true);
   const { id } = jwtDecode(localStorage.getItem("token"));
+  const navigate = useNavigate();
 
   async function displayUserOrders(userId) {
     let response = await getCheckoutOrders(userId);

@@ -4,7 +4,6 @@ import Footer from "./../Footer/Footer";
 import { Outlet } from "react-router-dom";
 import { TokenContext } from "./../../Context/TokenContext";
 import { Offline } from "react-detect-offline";
-import { Helmet } from "react-helmet";
 
 export default function MasterLayout() {
   const { setToken } = useContext(TokenContext);

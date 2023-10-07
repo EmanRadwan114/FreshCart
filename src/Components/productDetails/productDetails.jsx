@@ -70,17 +70,12 @@ export default function ProductDetails() {
     return axios.get(`https://ecommerce.routemisr.com/api/v1/products/${id}`);
   }
   let { data, isLoading } = useQuery("productDetails", getProductDetails);
-  let product = data?.data.data;
-  useEffect(() => {
-    if (localStorage.getItem("savedWishlistItem") !== null) {
-      setWishlist(JSON.parse(localStorage.getItem("savedWishlistItem")));
-    }
-  }, []);
+
   return (
     <>
       <Helmet>
-        <title>{product.title}</title>
-        <meta name="description" content={product.description} />
+        <title>{data?.data.data.title}</title>
+        <meta name="description" content={data?.data.data.description} />
       </Helmet>
       {isLoading ? (
         <div className="position-fixed start-0 end-0 top-0 bottom-0 d-flex justify-content-center align-items-center overlay">
@@ -92,11 +87,11 @@ export default function ProductDetails() {
             <div className="col-lg-4">
               <div className="productImg position-relative">
                 <Slider {...settings}>
-                  {product.images.map((img, index) => {
+                  {data?.data.data.images.map((img, index) => {
                     return (
                       <img
                         src={img}
-                        alt={product.title}
+                        alt={data?.data.data.title}
                         className="w-100"
                         key={index}
                       />
@@ -105,13 +100,15 @@ export default function ProductDetails() {
                 </Slider>
                 <i
                   className={`fa-${
-                    wishlistItem.includes(product.id) ? "solid" : "regular"
+                    wishlistItem.includes(data?.data.data.id)
+                      ? "solid"
+                      : "regular"
                   } text-danger fa-heart opacity-75 cursor-pointer py-3 px-4 fs-3 position-absolute heartIcon`}
                   onClick={() => {
-                    if (!wishlistItem.includes(product.id)) {
-                      addToWishlist(product.id);
+                    if (!wishlistItem.includes(data?.data.data.id)) {
+                      addToWishlist(data?.data.data.id);
                     } else {
-                      removewishlistItem(product.id);
+                      removewishlistItem(data?.data.data.id);
                     }
                   }}
                 ></i>
@@ -119,32 +116,34 @@ export default function ProductDetails() {
             </div>
             <div className="col-lg-8">
               <div className="productInfo">
-                <h1 className="h4 text-main fw-semibold">{product.title}</h1>
-                <p>{product.description}</p>
+                <h1 className="h4 text-main fw-semibold">
+                  {data?.data.data.title}
+                </h1>
+                <p>{data?.data.data.description}</p>
                 <p className="my-1 mx-0">
                   Category:
                   <span className="fw-semibold text-main ms-2">
-                    {product.category.name}
+                    {data?.data.data.category.name}
                   </span>
                 </p>
                 <p className="m-0">
                   Price:
                   <span className="fw-semibold text-main ms-2">
-                    {product.price} EGP
+                    {data?.data.data.price} EGP
                   </span>
                 </p>
                 <div className="d-flex justify-content-between align-items-center">
                   <p className="my-1 mx-0">
                     Ratings Quantity:
                     <span className="fw-semibold text-main ms-2">
-                      {product.ratingsQuantity}
+                      {data?.data.data.ratingsQuantity}
                     </span>
                   </p>
                   <p className="m-0">
                     <i className="fa-solid fa-star rating-color me-2"></i>
 
                     <span className="fw-semibold text-main">
-                      {product.ratingsAverage}
+                      {data?.data.data.ratingsAverage}
                     </span>
                   </p>
                 </div>

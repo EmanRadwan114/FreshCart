@@ -7,6 +7,8 @@ import { Helmet } from "react-helmet";
 
 export default function ForgetPass() {
   let [error, setError] = useState(null);
+  const [isLoading, setLoading] = useState(false);
+
   let navigate = useNavigate();
   let validationSchema = Yup.object({
     email: Yup.string().email("email is invalid").required("email is required"),
@@ -21,12 +23,16 @@ export default function ForgetPass() {
   });
 
   async function submitForgetPass(values) {
+    setLoading(true);
+
     let { data } = await axios
       .post(
         "https://ecommerce.routemisr.com/api/v1/auth/forgotPasswords",
         values
       )
       .catch((err) => {
+        setLoading(false);
+
         setError(err.response.data.message);
       });
     navigate("/resetCode");
@@ -64,9 +70,19 @@ export default function ForgetPass() {
         ) : (
           ""
         )}
-        <button type="submit" className="btn bg-main text-light">
-          Submit
-        </button>
+        {isLoading ? (
+          <button
+            type="button"
+            className="bg-main text-light btn px-3 rounded-1"
+            disabled
+          >
+            <i className="fa fa-spinner fa-spin"></i>
+          </button>
+        ) : (
+          <button type="submit" className="btn bg-main text-light">
+            Submit
+          </button>
+        )}
       </form>
     </main>
   );

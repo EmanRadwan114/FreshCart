@@ -7,6 +7,7 @@ import { Helmet } from "react-helmet";
 
 export default function ResetPass() {
   let [error, setError] = useState(null);
+  const [isLoading, setLoading] = useState(false);
   let navigate = useNavigate();
   let passRegex = /^[\w\.-]{6,}$/gm;
 
@@ -30,12 +31,15 @@ export default function ResetPass() {
   });
 
   async function submitForgetPass(values) {
+    setLoading(true);
+
     let { data } = await axios
       .put("https://ecommerce.routemisr.com/api/v1/auth/resetPassword", values)
       .catch((err) => {
+        setLoading(false);
+
         setError(err.response.data.message);
       });
-    console.log(data);
     navigate("/login");
   }
   return (
@@ -90,9 +94,19 @@ export default function ResetPass() {
         ) : (
           ""
         )}
-        <button type="submit" className="btn bg-main text-light">
-          Submit
-        </button>
+        {isLoading ? (
+          <button
+            type="button"
+            className="bg-main text-light btn px-3 rounded-1"
+            disabled
+          >
+            <i className="fa fa-spinner fa-spin"></i>
+          </button>
+        ) : (
+          <button type="submit" className="btn bg-main text-light">
+            Submit
+          </button>
+        )}
       </form>
     </main>
   );
