@@ -4,7 +4,7 @@ It allows you to create an account, log in to it, and then add your needed & des
 
 Wondering if you can use your preferred payment method? I have counted everything, so you can choose to pay either in cash or online.
 
- ###🌟Features & Tools:
+ ### Features & Tools:
 
 Authentication & Context
 SPA & Routing using react router
